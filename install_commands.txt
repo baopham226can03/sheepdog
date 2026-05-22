@@ -1,0 +1,24 @@
+# Minimal copy-paste installs for RTX 3090 (recommended: CUDA 11.8)
+
+# 0. Create & activate venv (PowerShell):
+python -m venv .venv
+.\\.venv\\Scripts\\Activate.ps1
+
+# 1. Core tooling
+pip install --upgrade pip setuptools wheel
+
+# 2. PyTorch (cu118 recommended for 3090)
+pip install torch==2.2.2 torchvision==0.15.2 torchaudio==2.2.2 \
+    --index-url https://download.pytorch.org/whl/cu118
+
+# 3. Transformers stack
+pip install transformers==4.51.0 tokenizers==0.21.0 accelerate==0.34.0 huggingface-hub==0.24.0 --no-deps
+
+# 4. Other deps
+pip install "numpy>=1.24.0,<2.0.0" pandas scikit-learn scipy tqdm pyyaml sentence-transformers openai python-dotenv bitsandbytes>=0.43.0
+
+# 5. Quick smoke test
+python -c "import torch,transformers; print(torch.__version__, torch.cuda.is_available(), transformers.__version__)"
+
+# If you need CUDA 12.1 instead, replace the torch line with:
+# pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu121
